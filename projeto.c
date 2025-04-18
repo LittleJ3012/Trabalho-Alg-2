@@ -202,17 +202,17 @@ long long int *quickSort(int *vet, int inicio, int fim, long long int *vet_info)
 int particiona(int *vet, int inicio, int fim, long long int *vet_info) {
     int meio = (inicio + fim) / 2;
 
-    // pega a mediana entre vet[inicio], vet[meio], vet[fim]
     int a = vet[inicio];
     int b = vet[meio];
     int c = vet[fim];
     int pivo_index;
 
+    // Mediana de três
     if ((a < b && b < c) || (c < b && b < a)) pivo_index = meio;
     else if ((b < a && a < c) || (c < a && a < b)) pivo_index = inicio;
     else pivo_index = fim;
 
-    // Troca pivô com o início
+    // Troca pivô pro início
     int tmp = vet[inicio];
     vet[inicio] = vet[pivo_index];
     vet[pivo_index] = tmp;
@@ -221,8 +221,15 @@ int particiona(int *vet, int inicio, int fim, long long int *vet_info) {
     int pivo = vet[inicio];
     int pos = inicio;
 
+    // Detecta se vetor está em ordem decrescente
+    int crescente = 1;
+    if (inicio < fim && vet[inicio] > vet[inicio + 1]) {
+        crescente = 0;
+    }
+
     for (int i = inicio + 1; i <= fim; i++) {
-        if (vet[i] < pivo) {
+        int cond = crescente ? (vet[i] < pivo) : (vet[i] > pivo);
+        if (cond) {
             pos++;
             if (pos != i) {
                 tmp = vet[pos];
@@ -241,6 +248,7 @@ int particiona(int *vet, int inicio, int fim, long long int *vet_info) {
 
     return pos;
 }
+
 
 
 //FUNÇÕES DO BLOCKSORT (ALGORITIMO NOVO):
