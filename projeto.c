@@ -200,13 +200,32 @@ long long int *quickSort(int *vet, int inicio, int fim, long long int *vet_info)
 }
 
 int particiona(int *vet, int inicio, int fim, long long int *vet_info) {
+    int meio = (inicio + fim) / 2;
+
+    // pega a mediana entre vet[inicio], vet[meio], vet[fim]
+    int a = vet[inicio];
+    int b = vet[meio];
+    int c = vet[fim];
+    int pivo_index;
+
+    if ((a < b && b < c) || (c < b && b < a)) pivo_index = meio;
+    else if ((b < a && a < c) || (c < a && a < b)) pivo_index = inicio;
+    else pivo_index = fim;
+
+    // Troca pivô com o início
+    int tmp = vet[inicio];
+    vet[inicio] = vet[pivo_index];
+    vet[pivo_index] = tmp;
+    vet_info[0]++;
+
     int pivo = vet[inicio];
     int pos = inicio;
+
     for (int i = inicio + 1; i <= fim; i++) {
         if (vet[i] < pivo) {
             pos++;
             if (pos != i) {
-                int tmp = vet[pos];
+                tmp = vet[pos];
                 vet[pos] = vet[i];
                 vet[i] = tmp;
                 vet_info[0]++;
@@ -214,10 +233,12 @@ int particiona(int *vet, int inicio, int fim, long long int *vet_info) {
         }
         vet_info[1]++;
     }
-    int tmp = vet[pos];
+
+    tmp = vet[pos];
     vet[pos] = vet[inicio];
     vet[inicio] = tmp;
     vet_info[0]++;
+
     return pos;
 }
 
