@@ -139,6 +139,7 @@ long long int *insercao(int *vet, int tam, long long int *vet_info) {
         }
         vet_info[1]++;
         vet[pos + 1] = aux;
+        vet_info[0] = vet_info[0] + 1;
     }
     return vet_info;
 }
@@ -453,11 +454,11 @@ void salvar_resultado(const char *nome, long long int *vet_info, int tam) {
     long tamanho = ftell(arquivo);
     if (tamanho == 0) {
         fprintf(arquivo, "--- %s ---\n", nome);
-        fprintf(arquivo, "Tempo\tComparacao\tTroca\n");
+        fprintf(arquivo, "Tempo\tComparacao\tTroca\tChamadas\n");
     }
 
     // Adicionar os dados do teste
-    fprintf(arquivo, "%lld\t%lld\t\t%lld\n", vet_info[3], vet_info[1], vet_info[0]);
+    fprintf(arquivo, "%lld\t%lld\t%lld\t\t%lld\n", vet_info[3], vet_info[1], vet_info[0], vet_info[2]);
 
     fclose(arquivo);
 }
