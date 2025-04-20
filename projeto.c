@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include "projeto.h"
 
-#define MAX 1000 // Corrigido: sem ponto e vírgula
+#define MAX 1000 
 
 // FUNÇÕES PARA GERAR OS VETORES
 
@@ -191,7 +191,7 @@ void merge(int *vet, int inicio, int meio, int fim, long long int *vet_info) {
 }
 
 long long int *quickSort(int *vet, int inicio, int fim, long long int *vet_info) {
-    vet_info[2]++;
+    vet_info[2]++; // conta chamada da função
     if (inicio < fim) {
         int pivo = particiona(vet, inicio, fim, vet_info);
         quickSort(vet, inicio, pivo - 1, vet_info);
@@ -201,51 +201,36 @@ long long int *quickSort(int *vet, int inicio, int fim, long long int *vet_info)
 }
 
 int particiona(int *vet, int inicio, int fim, long long int *vet_info) {
-    int meio = (inicio + fim) / 2;
+    // Seleciona um índice aleatório entre inicio e fim
+    int pivo_index = inicio + rand() % (fim - inicio + 1);
 
-    int a = vet[inicio];
-    int b = vet[meio];
-    int c = vet[fim];
-    int pivo_index;
-
-    // Mediana de três
-    if ((a < b && b < c) || (c < b && b < a)) pivo_index = meio;
-    else if ((b < a && a < c) || (c < a && a < b)) pivo_index = inicio;
-    else pivo_index = fim;
-
-    // Troca pivô pro início
+    // Move o pivô para o início do vetor
     int tmp = vet[inicio];
     vet[inicio] = vet[pivo_index];
     vet[pivo_index] = tmp;
-    vet_info[0]++;
+    vet_info[0]++; // conta troca
 
     int pivo = vet[inicio];
     int pos = inicio;
 
-    // Detecta se vetor está em ordem decrescente
-    int crescente = 1;
-    if (inicio < fim && vet[inicio] > vet[inicio + 1]) {
-        crescente = 0;
-    }
-
     for (int i = inicio + 1; i <= fim; i++) {
-        int cond = crescente ? (vet[i] < pivo) : (vet[i] > pivo);
-        if (cond) {
+        vet_info[1]++; // conta comparação
+        if (vet[i] < pivo) {
             pos++;
             if (pos != i) {
                 tmp = vet[pos];
                 vet[pos] = vet[i];
                 vet[i] = tmp;
-                vet_info[0]++;
+                vet_info[0]++; // conta troca
             }
         }
-        vet_info[1]++;
     }
 
+    // Coloca o pivô na posição final correta
     tmp = vet[pos];
     vet[pos] = vet[inicio];
     vet[inicio] = tmp;
-    vet_info[0]++;
+    vet_info[0]++; // conta troca final do pivô
 
     return pos;
 }
@@ -264,7 +249,6 @@ void trocar(int* a, int* b, long long int *vet_info) {
 
 // Insertion sort com contagem
 void insertionSort(int vet[], int inicio, int fim, long long int *vet_info) {
-    vet_info[2]++; // chamada da função
     for (int marcador = inicio + 1; marcador < fim; marcador++) {
         int aux = vet[marcador];
         int posicao = marcador - 1;
@@ -282,7 +266,6 @@ void insertionSort(int vet[], int inicio, int fim, long long int *vet_info) {
 
 // Merge com buffer com contagem
 void mergeComBuffer(int vet[], int inicio, int meio, int fim, int *buffer, int tamanhoBuffer, long long int *vet_info) {
-    vet_info[2]++; // chamada da função
     for (int k = 0; k < tamanhoBuffer; k++) {
         buffer[k] = vet[inicio + k];
     }
@@ -310,7 +293,6 @@ void mergeComBuffer(int vet[], int inicio, int meio, int fim, int *buffer, int t
 
 // BlockSort completo com contadores
 long long int *blockSort(int *vet, int inicio, int fim, long long int *vet_info) {
-    vet_info[2]++; // chamada da função principal
 
     int tam = fim - inicio + 1;
     int *subvet = vet + inicio;
@@ -462,3 +444,4 @@ void salvar_resultado(const char *nome, long long int *vet_info, int tam) {
 
     fclose(arquivo);
 }
+
