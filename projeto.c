@@ -201,40 +201,32 @@ long long int *quickSort(int *vet, int inicio, int fim, long long int *vet_info)
 }
 
 int particiona(int *vet, int inicio, int fim, long long int *vet_info) {
-    // Seleciona um índice aleatório entre inicio e fim
-    int pivo_index = inicio + rand() % (fim - inicio + 1);
-
-    // Move o pivô para o início do vetor
-    int tmp = vet[inicio];
-    vet[inicio] = vet[pivo_index];
-    vet[pivo_index] = tmp;
-    vet_info[0]++; // conta troca
-
-    int pivo = vet[inicio];
+    int pivo = vet[inicio];            // Pivô é o primeiro elemento
     int pos = inicio;
 
     for (int i = inicio + 1; i <= fim; i++) {
-        vet_info[1]++; // conta comparação
+        vet_info[1]++;                 // Conta comparação
         if (vet[i] < pivo) {
             pos++;
             if (pos != i) {
-                tmp = vet[pos];
+                int tmp = vet[pos];
                 vet[pos] = vet[i];
                 vet[i] = tmp;
-                vet_info[0]++; // conta troca
+                vet_info[0]++;         // Conta troca
             }
         }
     }
 
     // Coloca o pivô na posição final correta
-    tmp = vet[pos];
-    vet[pos] = vet[inicio];
-    vet[inicio] = tmp;
-    vet_info[0]++; // conta troca final do pivô
+    if (pos != inicio) {               // Só conta a troca se realmente houver troca
+        int tmp = vet[pos];
+        vet[pos] = vet[inicio];
+        vet[inicio] = tmp;
+        vet_info[0]++;                 // Conta troca final do pivô
+    }
 
     return pos;
 }
-
 
 
 //FUNÇÕES DO BLOCKSORT (ALGORITIMO NOVO):
@@ -444,4 +436,3 @@ void salvar_resultado(const char *nome, long long int *vet_info, int tam) {
 
     fclose(arquivo);
 }
-
